@@ -1,0 +1,75 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor Pengguna
+actor KontakDarurat
+actor Admin
+actor Ambulans
+actor RumahSakit
+actor SensorIoT
+
+rectangle "SINDUKA Guardian" {
+  package "User Management" {
+    usecase "Register" as UC1
+    usecase "Login" as UC2
+    usecase "Kelola Profil" as UC3
+    usecase "Kelola Kontak Darurat" as UC4
+  }
+
+  package "Travel Safety" {
+    usecase "Mulai Safe Journey" as UC5
+    usecase "Check-In Berkala" as UC6
+    usecase "Lihat Live Tracking" as UC7
+    usecase "Silent SOS" as UC8
+    usecase "Konfirmasi Aman" as UC9
+  }
+
+  package "Guardian Detection" {
+    usecase "Deteksi Benturan" as UC10
+    usecase "Deteksi Rollover" as UC11
+    usecase "Timeout Check-In" as UC12
+  }
+
+  package "Emergency Response" {
+    usecase "Buat Incident" as UC13
+    usecase "Kirim Notifikasi" as UC14
+    usecase "Dispatch Ambulans" as UC15
+    usecase "Assign Rumah Sakit" as UC16
+    usecase "Monitoring Admin" as UC17
+    usecase "Generate Report" as UC18
+  }
+}
+
+Pengguna --> UC1
+Pengguna --> UC2
+Pengguna --> UC3
+Pengguna --> UC4
+Pengguna --> UC5
+Pengguna --> UC6
+Pengguna --> UC7
+Pengguna --> UC8
+Pengguna --> UC9
+
+SensorIoT --> UC10
+SensorIoT --> UC11
+SensorIoT --> UC12
+
+KontakDarurat --> UC14
+Admin --> UC17
+Admin --> UC18
+Admin --> UC15
+Admin --> UC16
+Ambulans --> UC15
+RumahSakit --> UC16
+
+UC5 ..> UC7 : includes
+UC10 ..> UC13 : triggers
+UC11 ..> UC13 : triggers
+UC12 ..> UC13 : triggers
+UC8 ..> UC13 : triggers
+UC13 ..> UC14 : send alert
+UC13 ..> UC15 : dispatch
+UC13 ..> UC16 : assign hospital
+@enduml

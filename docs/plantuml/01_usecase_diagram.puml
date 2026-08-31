@@ -1,0 +1,58 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam backgroundColor transparent
+
+actor Pengguna
+actor KontakDarurat
+actor Admin
+actor Ambulans
+actor RumahSakit
+actor SensorIoT
+
+rectangle "SINDUKA Guardian System" {
+  usecase "Register / Login" as UC01
+  usecase "Kelola Profil & Kontak Darurat" as UC02
+  usecase "Mulai Safe Journey" as UC03
+  usecase "Check-In Berkala" as UC04
+  usecase "Lihat Live Tracking" as UC05
+  usecase "Deteksi Benturan / Rollover" as UC06
+  usecase "Trigger Silent SOS" as UC07
+  usecase "Batalkan / Konfirmasi Keamanan" as UC08
+  usecase "Menerima Notifikasi Darurat" as UC09
+  usecase "Monitoring Incident" as UC10
+  usecase "Dispatch Ambulans" as UC11
+  usecase "Assign Rumah Sakit" as UC12
+  usecase "Generate Analytics & Report" as UC13
+}
+
+Pengguna --> UC01
+Pengguna --> UC02
+Pengguna --> UC03
+Pengguna --> UC04
+Pengguna --> UC05
+Pengguna --> UC06
+Pengguna --> UC07
+Pengguna --> UC08
+
+SensorIoT --> UC06
+SensorIoT --> UC04
+
+KontakDarurat --> UC09
+Admin --> UC10
+Admin --> UC11
+Admin --> UC12
+Admin --> UC13
+
+Ambulans --> UC11
+RumahSakit --> UC12
+
+UC03 ..> UC05 : includes
+UC06 ..> UC10 : triggers
+UC07 ..> UC10 : triggers
+UC06 ..> UC11 : dispatch
+UC07 ..> UC11 : dispatch
+UC10 ..> UC09 : send alert
+UC10 ..> UC12 : send referral
+@enduml

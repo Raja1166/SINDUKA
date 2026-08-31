@@ -1,0 +1,55 @@
+@startuml
+start
+:Pengguna membuka aplikasi SINDUKA+;
+if (Sudah login?) then (ya)
+  :Arahkan ke Dashboard;
+else (tidak)
+  :Masukkan email & password;
+  :Validasi kredensial oleh AuthService;
+  if (valid?) then (ya)
+    :Buat session user;
+    :Arahkan ke Dashboard;
+  else (tidak)
+    :Tampilkan error login;
+    stop
+  endif
+endif
+
+:Pengguna memilih Safe Journey;
+:Input origin dan destination;
+:Atur lama perjalanan dan interval check-in;
+:Start Journey;
+:Guardian memantau GPS dan sensor IoT;
+
+repeat
+  :Ambil data sensor dan lokasi;
+  if (Waktu check-in tiba?) then (ya)
+    :Tampilkan modal Check-In;
+    if (User menekan Saya Aman?) then (ya)
+      :Konfirmasi keamanan;
+      :Lanjutkan perjalanan;
+    else (tidak)
+      :Tunda atau trigger emergency;
+    endif
+  endif
+  if (Sensor benturan / rollover terdeteksi?) then (ya)
+    :Buat Incident;
+    :Kirim notifikasi ke keluarga, admin, rumah sakit;
+    :Dispatch ambulans;
+    :Arahkan ke halaman Emergency Dispatch;
+    stop
+  else (tidak)
+    :Lanjutkan monitoring;
+  endif
+  if (Pengguna menekan Silent SOS?) then (ya)
+    :Aktifkan Silent SOS;
+    :Buat Incident darurat;
+    :Kirim alert ke pusat komando;
+    :Arahkan ke halaman dispatch;
+    stop
+  endif
+repeat while (Perjalanan selesai?) is (tidak)
+-> ya;
+:Catat perjalanan selesai;
+stop
+@enduml

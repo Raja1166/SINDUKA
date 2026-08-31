@@ -1,0 +1,51 @@
+@startuml
+actor User
+participant "Frontend App" as App
+participant "GuardianService" as GS
+participant "IoT Sensor" as Sensor
+participant "IncidentManager" as IM
+participant "NotificationService" as NS
+participant "Admin" as Admin
+participant "Ambulance" as Ambulance
+participant "Hospital" as Hospital
+
+User -> App : login(email, password)
+App -> GS : validateCredentials()
+GS --> App : userSession
+App --> User : dashboard
+
+User -> App : startJourney(origin, destination, eta)
+App -> GS : startJourney()
+GS -> Sensor : startTelemetry()
+Sensor --> GS : gps + accelerometer + gyroscope data
+GS --> App : journeyStarted
+
+loop setiap interval check-in
+  Sensor --> GS : sensorTelemetry()
+  GS -> App : showCheckInPrompt()
+  User --> App : confirmCheckIn()
+  App -> GS : confirmCheckIn()
+  GS --> App : checkInConfirmed
+end
+
+alt sensor impact / rollover detected
+  Sensor --> GS : anomalyDetected(accelG, gyroRoll)
+  GS -> IM : createIncident(trigger, severity)
+  IM -> NS : sendEmergencyAlert()
+  NS -> Admin : pushAlert()
+  NS -> User : notifyEmergencyContacts()
+  NS -> Hospital : referralNotification()
+  IM -> Ambulance : dispatchEmergency(unit)
+  Ambulance --> IM : accepted
+  IM --> App : emergencyDispatchScreen
+  App --> User : showDispatchStatus
+else user triggers Silent SOS
+  User -> App : triggerSilentSOS()
+  App -> GS : triggerSilentSOS()
+  GS -> IM : createIncident(silent_sos)
+  IM -> NS : sendSilentAlert()
+  NS -> Admin : emergencyBroadcast()
+  NS -> Ambulance : dispatchNearestUnit()
+  Ambulance --> Hospital : transferOrder
+end
+@enduml

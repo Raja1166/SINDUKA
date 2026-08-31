@@ -1,0 +1,30 @@
+@startuml
+left to right direction
+skinparam componentStyle rectangle
+
+component "Web Frontend\nSINDUKA+" as Frontend
+component "Guardian Core\nSafe Journey & Sensor Monitor" as Guardian
+component "Auth Service" as Auth
+component "User Profile Module" as Profile
+component "Incident Manager" as Incident
+component "Notification Service" as Notification
+component "Admin Dashboard" as Admin
+component "Ambulance Dispatch" as Ambulance
+component "Hospital Referral" as Hospital
+component "IoT Sensor\nMPU6050 + GPS" as Sensor
+
+Frontend --> Guardian
+Frontend --> Auth
+Frontend --> Profile
+Frontend --> Admin
+
+Guardian --> Sensor
+Guardian --> Incident
+Guardian --> Notification
+
+Incident --> Ambulance
+Incident --> Hospital
+Incident --> Admin
+Notification --> Admin
+Notification --> Profile
+@enduml

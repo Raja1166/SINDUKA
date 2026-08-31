@@ -1,0 +1,89 @@
+@startuml
+entity User {
+  * id : varchar <<PK>>
+  --
+  full_name : varchar
+  email : varchar
+  phone : varchar
+  password_hash : varchar
+  blood_type : varchar
+  address : text
+  age : int
+  created_at : datetime
+}
+
+entity EmergencyContact {
+  * id : int <<PK>>
+  --
+  user_id : varchar <<FK>>
+  name : varchar
+  relationship : varchar
+  phone : varchar
+}
+
+entity Journey {
+  * id : varchar <<PK>>
+  --
+  user_id : varchar <<FK>>
+  origin : text
+  destination : text
+  estimated_minutes : int
+  elapsed_seconds : int
+  remaining_seconds : int
+  status : varchar
+  shareable_token : varchar
+  check_in_interval : int
+}
+
+entity SensorData {
+  * id : varchar <<PK>>
+  --
+  journey_id : varchar <<FK>>
+  accel_g : float
+  gyro_roll : float
+  gyro_pitch : float
+  speed_kmh : int
+  battery_level : int
+  gps_lat : float
+  gps_lng : float
+  gps_accuracy_m : float
+  altitude_m : float
+  last_updated : datetime
+  connection_status : varchar
+}
+
+entity Incident {
+  * id : varchar <<PK>>
+  --
+  user_id : varchar <<FK>>
+  journey_id : varchar <<FK>>
+  trigger_type : varchar
+  trigger_description : text
+  severity : varchar
+  status : varchar
+  location_name : text
+  gps_lat : float
+  gps_lng : float
+  assigned_hospital : varchar
+  assigned_ambulance : varchar
+  eta_minutes : int
+}
+
+entity NotificationLog {
+  * id : varchar <<PK>>
+  --
+  incident_id : varchar <<FK>>
+  recipient : varchar
+  channel : varchar
+  message : text
+  status : varchar
+  sent_at : datetime
+}
+
+User ||--o{ EmergencyContact
+User ||--o{ Journey
+Journey ||--o{ SensorData
+User ||--o{ Incident
+Journey ||--o{ Incident
+Incident ||--o{ NotificationLog
+@enduml

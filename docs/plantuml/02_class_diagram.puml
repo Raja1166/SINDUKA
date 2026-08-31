@@ -1,0 +1,143 @@
+@startuml
+class User {
+  +id: String
+  +fullName: String
+  +email: String
+  +phone: String
+  +bloodType: String
+  +address: String
+  +age: Int
+  +register()
+  +login()
+  +updateProfile()
+}
+
+class EmergencyContact {
+  +id: Int
+  +name: String
+  +relationship: String
+  +phone: String
+}
+
+class Journey {
+  +id: String
+  +origin: String
+  +destination: String
+  +estimatedMinutes: Int
+  +elapsedSeconds: Int
+  +remainingSeconds: Int
+  +status: String
+  +checkInIntervalSeconds: Int
+  +shareableToken: String
+  +startJourney()
+  +pauseJourney()
+  +resumeJourney()
+  +endJourney()
+}
+
+class SensorData {
+  +accelG: Float
+  +gyroRoll: Float
+  +gyroPitch: Float
+  +speedKmh: Int
+  +batteryLevel: Int
+  +gpsLat: Float
+  +gpsLng: Float
+  +gpsAccuracyMeters: Float
+  +altitudeMeters: Float
+  +lastUpdated: String
+  +connectionStatus: String
+}
+
+class Incident {
+  +id: String
+  +timestamp: String
+  +triggerType: String
+  +triggerDescription: String
+  +severity: String
+  +status: String
+  +locationName: String
+  +gpsLat: Float
+  +gpsLng: Float
+  +userName: String
+  +userPhone: String
+  +userBloodType: String
+  +assignedHospital: String
+  +assignedAmbulance: String
+  +etaAmbulanceMinutes: Int
+  +createIncident()
+  +updateStatus()
+}
+
+class NotificationLog {
+  +id: String
+  +time: String
+  +recipient: String
+  +channel: String
+  +message: String
+  +status: String
+}
+
+class GuardianService {
+  +startJourney()
+  +confirmCheckIn()
+  +postponeCheckIn()
+  +triggerSilentSOS()
+  +simulateCrashImpact()
+  +simulateRolloverTilt()
+  +detectAnomaly()
+  +dispatchEmergency()
+}
+
+class AuthService {
+  +register()
+  +login()
+  +saveSession()
+  +getSession()
+}
+
+class AdminDashboard {
+  +monitorIncidents()
+  +viewIncidentDetail()
+  +dispatchAmbulance()
+  +generateReports()
+}
+
+class Ambulance {
+  +id: String
+  +unitName: String
+  +status: String
+  +etaMinutes: Int
+  +dispatch()
+  +trackLocation()
+}
+
+class Hospital {
+  +id: String
+  +name: String
+  +address: String
+  +icuAvailable: Boolean
+  +receiveReferral()
+}
+
+class NotificationService {
+  +sendSMS()
+  +sendWhatsApp()
+  +sendWebSocket()
+  +sendHospitalHIS()
+}
+
+User "1" *-- "N" EmergencyContact
+User "1" --> "0..*" Journey
+User "1" --> "0..*" Incident
+Journey "1" --> "1" SensorData
+Incident "1" --> "N" NotificationLog
+GuardianService --> SensorData
+GuardianService --> Incident
+GuardianService --> NotificationService
+GuardianService --> Journey
+AuthService --> User
+AdminDashboard --> Incident
+AdminDashboard --> Ambulance
+Ambulance --> Hospital
+@enduml

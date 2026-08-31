@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+skinparam componentStyle rectangle
+
+node "Client Device" as Client {
+  component "Browser" as Browser
+  component "SINDUKA+ Web App" as WebApp
+}
+
+node "Application Server" as AppServer {
+  component "React/Vite Frontend" as Frontend
+  component "Guardian Logic" as GuardianLogic
+  component "Auth Controller" as AuthCtrl
+  component "Incident Controller" as IncidentCtrl
+}
+
+node "Data Layer" as DataLayer {
+  database "Local Storage / Session" as LocalStorage
+  database "User & Incident Data" as DataDB
+}
+
+node "External Services" as External {
+  component "WhatsApp / SMS" as SMS
+  component "Admin Command Center" as AdminCenter
+  component "Hospital HIS" as HIS
+  component "Ambulance Dispatch API" as AmbulanceAPI
+  component "IoT Sensor ESP32" as IoT
+}
+
+Browser --> WebApp
+WebApp --> Frontend
+Frontend --> GuardianLogic
+Frontend --> AuthCtrl
+GuardianLogic --> IncidentCtrl
+IncidentCtrl --> DataDB
+GuardianLogic --> LocalStorage
+IncidentCtrl --> SMS
+IncidentCtrl --> AdminCenter
+IncidentCtrl --> HIS
+IncidentCtrl --> AmbulanceAPI
+IoT --> GuardianLogic
+@enduml

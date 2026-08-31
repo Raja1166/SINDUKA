@@ -1,0 +1,22 @@
+@startuml
+[*] --> Idle
+
+Idle --> InTransit : startJourney()
+Idle --> Completed : endJourney()
+
+InTransit --> Paused : pauseJourney()
+Paused --> InTransit : resumeJourney()
+InTransit --> CheckInPending : emitCheckInTimer()
+CheckInPending --> InTransit : confirmCheckIn()
+CheckInPending --> Incident : missedCheckIn() || triggerSilentSOS()
+CheckInPending --> Incident : anomalyDetected()
+
+InTransit --> Incident : accidentDetected()
+Incident --> Dispatched : notifyAdmin() && dispatchAmbulance()
+Dispatched --> OnScene : ambulanceArrived()
+OnScene --> Resolved : patientHandled()
+Resolved --> Completed : finishCase()
+
+Incident --> Completed : userSafe() && cancelEmergency()
+Completed --> [*]
+@enduml
