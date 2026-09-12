@@ -1,11 +1,27 @@
+# SINDUKA
 
-  # Create New Project
+SINDUKA merupakan sistem yang dirancang untuk membantu mendeteksi dan menangani kondisi kecelakaan di jalan raya dengan memanfaatkan teknologi berbasis web.
 
-  This is a code bundle for Create New Project. The original project is available at https://www.figma.com/design/geNaSj9pGEp6TeMv3uHloq/Create-New-Project.
+## Fitur
 
-  ## Running the code
+- Monitoring kondisi kecelakaan
+- Informasi lokasi kejadian
+- Tampilan lokasi pada peta
+- Informasi kendaraan dan pengguna
+- Simulasi pengiriman informasi keadaan darurat
+- Integrasi informasi untuk membantu proses penanganan kecelakaan
 
-  Run `npm i` to install the dependencies.
+## Teknologi
 
-  Run `npm run dev` to start the development server.
-  
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+
+## Menjalankan Project
+
+Install dependencies:
+
+```bash
+npm install
